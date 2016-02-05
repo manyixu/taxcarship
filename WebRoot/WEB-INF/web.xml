@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!--
+		<servlet> <servlet-name>XFireServlet</servlet-name>
+		<servlet-class>org.codehaus.xfire.transport.http.XFireConfigurableServlet</servlet-class>
+		<load-on-startup>0</load-on-startup> </servlet> <servlet-mapping>
+		<servlet-name>XFireServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern> </servlet-mapping>
+	-->
+	<filter>
+		<filter-name>CheckAdminFilter</filter-name>
+		<filter-class>com.derun.controller.login.web.CheckAdminFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CheckAdminFilter</filter-name>
+		<url-pattern>/ccs/jsp/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>WsdlServlet</servlet-name>
+		<servlet-class>com.derun.common.webservice.WsdlServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WsdlServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<!--
+		Druid <servlet> <servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		</servlet> <servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern> </servlet-mapping>
+	-->
+	<!-- DWR -->
+	<servlet>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- 初始化列 -->
+	<servlet>
+		<servlet-name>GetReportColumn</servlet-name>
+		<servlet-class>com.derun.monitors.GetReportColumn_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetReportColumn</servlet-name>
+		<url-pattern>/getColumn</url-pattern>
+	</servlet-mapping>
+
+	<!-- 登录 -->
+	<servlet>
+		<servlet-name>loginServlet</servlet-name>
+		<servlet-class>com.derun.controller.login.web.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginServlet</servlet-name>
+		<url-pattern>/loginServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 业务查询 -->
+	<servlet>
+		<servlet-name>busiQueryServlet</servlet-name>
+		<servlet-class>com.derun.controller.busiQuery.web.BusiQueryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>busiQueryServlet</servlet-name>
+		<url-pattern>/busiQueryServlets</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>busiPageQueryServlet</servlet-name>
+		<servlet-class>com.derun.controller.busiQuery.web.BusiPageQueryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>busiPageQueryServlet</servlet-name>
+		<url-pattern>/busiPageQueryServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 参数配置  -->
+	<servlet>
+		<servlet-name>paraCfgServlet</servlet-name>
+		<servlet-class>com.derun.controller.paraCfg.web.ParaCfgServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>paraCfgServlet</servlet-name>
+		<url-pattern>/paraCfgServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 参数配置  保存  -->
+	<servlet>
+		<servlet-name>savaParaCfgServlet</servlet-name>
+		<servlet-class>com.derun.controller.paraCfg.web.SavaParaCfgServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>savaParaCfgServlet</servlet-name>
+		<url-pattern>/savaParaCfgServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 参数配置  删除 -->
+	<servlet>
+		<servlet-name>deleteParaCfgServlet</servlet-name>
+		<servlet-class>com.derun.controller.paraCfg.web.DeleteParaCfgServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>deleteParaCfgServlet</servlet-name>
+		<url-pattern>/deleteParaCfgServlet</url-pattern>
+	</servlet-mapping>
+
+	<!-- 选择界面 -->
+	<servlet>
+		<servlet-name>XZJM</servlet-name>
+		<servlet-class>com.derun.monitors.Xzjm_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>XZJM</servlet-name>
+		<url-pattern>/preCheck_password</url-pattern>
+	</servlet-mapping>
+
+	<!-- 业务监控 -->
+	<servlet>
+		<servlet-name>YWJK</servlet-name>
+		<servlet-class>com.derun.monitors.Monitor_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>YWJK</servlet-name>
+		<url-pattern>/ywjk</url-pattern>
+	</servlet-mapping>
+	<!-- 合计汇总 -->
+	<servlet>
+		<servlet-name>HJHZ</servlet-name>
+		<servlet-class>com.derun.monitors.Hjhz_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>HJHZ</servlet-name>
+		<url-pattern>/hjhz</url-pattern>
+	</servlet-mapping>
+	<!-- 在context-param之后，filter和servlet之前被调用 -->
+	<listener>
+		<listener-class>com.derun.common.init.CfgLoader</listener-class>
+	</listener>
+	<!-- 业务明细 合计汇总 初始化 -->
+	<listener>
+		<listener-class>com.derun.monitors.Hjhz_Listener</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+
+	<!--  白名单审核 2014-11-23 MILI -->
+	<servlet>
+		<servlet-name>examine</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteListCheckServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>examine</servlet-name>
+		<url-pattern>/white_examine</url-pattern>
+	</servlet-mapping>
+	<!--  白名单审核 2014-11-23 MILI -->
+	<!--  白名单审核批量通过 2014-11-24 MILI -->
+	<servlet>
+		<servlet-name>examine_pl</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteListCheckServlet_pl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>examine_pl</servlet-name>
+		<url-pattern>/white_pl</url-pattern>
+	</servlet-mapping>
+	<!--  白名单审核批量通过 2014-11-24 MILI -->
+	<!-- 白名单 详细信息 2014-11-25 16:46:25 MILI -->
+	<servlet>
+		<servlet-name>examine_xx</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteListCheckServlet_xx</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>examine_xx</servlet-name>
+		<url-pattern>/white_xx</url-pattern>
+	</servlet-mapping>
+	<!-- 白名单 详细信息 2014-11-25 16:46:25 MILI -->
+	<!-- 白名单 单条通过 2014-11-26 09:25:39 MILI -->
+	<servlet>
+		<servlet-name>examine_dt</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteListCheckServlet_dt</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>examine_dt</servlet-name>
+		<url-pattern>/white_dt</url-pattern>
+	</servlet-mapping>
+	<!-- 白名单 单条通过 2014-11-26 09:25:44 MILI -->
+	<!-- 白名单查询 -->
+	<servlet>
+		<servlet-name>whiteQueryServlet</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteQueryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>whiteQueryServlet</servlet-name>
+		<url-pattern>/whiteQueryServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 白名单详细 -->
+	<servlet>
+		<servlet-name>whiteQueryDetailServlet</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteQueryDetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>whiteQueryDetailServlet</servlet-name>
+		<url-pattern>/whiteQueryDetailServlet</url-pattern>
+	</servlet-mapping>
+
+	<!-- 白名单申请 -->
+	<servlet>
+		<servlet-name>whiteApplyServlet</servlet-name>
+		<servlet-class>com.derun.controller.whiteList.WhiteApplyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>whiteApplyServlet</servlet-name>
+		<url-pattern>/whiteApplyServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>initservlet</servlet-name>
+		<servlet-class>com.derun.monitors.yewu.YeWu_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>initservlet</servlet-name>
+		<url-pattern>/initser</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ajax_servlet</servlet-name>
+		<servlet-class>com.derun.monitors.yewu.Ajax_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ajax_servlet</servlet-name>
+		<url-pattern>/ajax</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>hjhz_servlet</servlet-name>
+		<servlet-class>com.derun.monitors.yewu.HjHz_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>hjhz_servlet</servlet-name>
+		<url-pattern>/ajax_hjhz</url-pattern>
+	</servlet-mapping>
+
+	<!-- MILI Test end-->
+	<!--  
+	<servlet>
+		<servlet-name>test_upload</servlet-name>
+		<servlet-class>com.derun.test.UpLoad_Servlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>test_upload</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+	-->
+</web-app>

@@ -1,0 +1,53 @@
+[ 
+{
+	"id" : 1,
+	"text" : "系统管理",
+	"children" : [ {
+		"id" : "userManage",
+		"text" : "用户管理"
+	},{
+		"id" : "menuManage",
+		"text" : "权限管理"
+	}]
+},
+{
+	"id" : 2,
+	"text" : "数据维护",
+	"children" : [ {
+		"id" : "paraCfg",
+		"text" : "参数配置"
+	},{
+		"id" : "whiteListApply",
+		"text" : "白名单申请"
+	}]
+}, {
+	"id" : 3,
+	"text" : "数据审核",
+	"children" : [ {
+		"id" : "whiteListCheck",
+		"text" : "白名单审核"
+	}]
+}, {
+	"id" : 4,
+	"text" : "业务查询",
+	"children" : [ {
+		"id" : "busiQuery",
+		"text" : "业务查询"
+	},{
+		"id" : "whiteListQuery",
+		"text" : "白名单查询"
+	}]
+},{
+	"id" : 5,
+	"text" : "监控功能",
+	"children" : [ {
+		"id" : "init",
+		"text" : "业务监控"
+	},{
+		"id" : "sysMon",
+		"text" : "系统监控"
+	},{
+		"id" : "druid",
+		"text" : "数据源监控"
+	}]
+}]

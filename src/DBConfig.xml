@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<DBCONFIG> 
+	<DRIVERS>
+		<DRIVER>oracle.jdbc.driver.OracleDriver</DRIVER>
+	</DRIVERS>
+	<DBPOOL>
+		<NAME>readPool</NAME>
+		<URL>jdbc:oracle:thin:tpl/tpl@127.0.0.1:1521:orcl</URL> 
+		<USER>tpl</USER>
+		<PASSWORD>tpl</PASSWORD>
+		<MINCONN>10</MINCONN>
+		<!-- 最小连接数 -->
+		<MAXCONN>150</MAXCONN>
+		<!-- 最大连接数 5000-->
+		<CONNSUM>5000</CONNSUM>
+		<!-- 统计连接总数的界定值,0为不刷新-->
+		<REFRESHCONN>10</REFRESHCONN>
+		<!-- 刷新连接数量，与CONNSUM共同使用,0为不刷新 -->
+	</DBPOOL>
+
+</DBCONFIG>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+
+<dwr>
+	<allow>
+		<create creator="new" javascript="SysInfoUtil" scope="application">
+			<param name="class" value="com.derun.common.mon.SysInfoUtil" />
+		</create>
+	</allow>
+	
+	<allow>
+		<create creator="new" javascript="LoginServlet" scope="application">
+			<param name="class" value="com.derun.controller.login.web.LoginServlet" />
+			<include method="getUserList"></include>
+			<include method="addUser"></include>
+			<include method="destroyUser"></include>
+			<include method="isExist"></include>
+		</create>
+		<convert converter="bean" match="com.derun.controller.login.util.User">
+		</convert>
+	</allow>
+</dwr>

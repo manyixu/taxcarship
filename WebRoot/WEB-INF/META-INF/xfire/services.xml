@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xfire.codehaus.org/config/1.0">
+
+	<service>
+	<!-- 投保查询服务 -->
+		<name>TaxQueryService</name>
+		<serviceClass>com.derun.taxquery.service.TaxQueryService</serviceClass>
+		 <implementationClass>com.derun.taxquery.service.impl.TaxQueryServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 投保确认服务 -->
+		<name>TaxConfirmService</name>
+		<serviceClass>com.derun.taxconfirm.service.TaxConfirmService</serviceClass>
+		<implementationClass>com.derun.taxconfirm.service.impl.TaxConfirmServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 变更查询服务 -->
+		<name>TaxChangeQueryService</name>
+		<serviceClass>com.derun.taxchangequery.service.TaxChangeQueryService</serviceClass>
+		<implementationClass>com.derun.taxchangequery.service.impl.TaxChangeQueryServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 变更确认服务 -->
+		<name>TaxChangeConfirmService</name>
+		<serviceClass>com.derun.taxchangeconfirm.service.TaxChangeConfirmService</serviceClass>
+		<implementationClass>com.derun.taxchangeconfirm.service.impl.TaxChangeConfirmServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 对账服务 -->
+		<name>TaxReconciliationService</name>
+		<serviceClass>com.derun.taxreconciliation.service.TaxReconciliationService</serviceClass>
+		<implementationClass>com.derun.taxreconciliation.service.impl.TaxReconciliationServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 申报日期上传服务 -->
+		<name>TaxDeclaeredUPloadService</name>
+		<serviceClass>com.derun.taxdeclaration.service.TaxDeclaeredUPloadService</serviceClass>
+		<implementationClass>com.derun.taxdeclaration.service.impl.TaxDeclaeredUPloadServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
+	<!-- 纳税信息查询服务 -->
+		<name>TaxPayQueryService</name>
+		<serviceClass>com.derun.taxpayquery.service.TaxPayQueryService</serviceClass>
+		<implementationClass>com.derun.taxpayquery.service.impl.TaxPayQueryServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+</beans>

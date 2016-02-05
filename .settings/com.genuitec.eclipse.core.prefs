@@ -1,0 +1,4 @@
+#Sun Nov 23 16:35:43 CST 2014
+eclipse.preferences.version=1
+validator.Checked=WebRoot/ccs/data/status.json,.myeclipse/wsgeneration,WebRoot/ccs/data/menu.json,WebRoot/ccs/data/course.json,WebRoot/ccs/jsp/YeWu/meun.jsp
+validator.Unchecked=

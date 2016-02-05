@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+.icon-bg{
+	background:url('../image/bg.png') repeat;
+}
+.icon-save{
+	background:url('../image/save.png') no-repeat;
+}
+.icon-saveAs{
+	background:url('../image/saveAs.png') no-repeat;
+}
+.icon-bench{
+	background:url('../image/bench.png') no-repeat;
+}
+.icon-help{
+	background:url('../image/help.png') no-repeat;
+}
+.icon-load{
+	background:url('../image/load.png') no-repeat;
+}
+.icon-create{
+	background:url('../image/create.png') no-repeat;
+}
+.icon-del{
+	background:url('../image/del.png') no-repeat;
+}
+.icon-lht{
+	background:url('../image/lht.png') no-repeat;
+}
+.icon-other{
+	background:url('../image/other.png') no-repeat;
+}
+.icon-resource{
+	background:url('../image/resource.png') no-repeat;
+}
+.icon-start{
+	background:url('../image/start.png') no-repeat;
+}
+.icon-end{
+	background:url('../image/end.png') no-repeat;
+}
+
+.icon-add{
+	background:url('../image/add.png') no-repeat;
+}
+.icon-edit{
+	background:url('../image/edit.png') no-repeat;
+}
+.icon-redo{
+	background:url('../image/redo.png') no-repeat;
+}
+.icon-remove{
+	background:url('../image/remove.png') no-repeat;
+}
+.icon-up{
+	background:url('../image/up.png') no-repeat;
+}
+.icon-down{
+	background:url('../image/down.png') no-repeat;
+}
+.icon-cpu{
+	background:url('../image/cpu.png') no-repeat;
+}
+.icon-database{
+	background:url('../image/database.png') no-repeat;
+}
+.icon-harddisk{
+	background:url('../image/harddisk.png') no-repeat;
+}
+.icon-java{
+	background:url('../image/java.png') no-repeat;
+}
+.icon-memory{
+	background:url('../image/memory.png') no-repeat;
+}
+.icon-network{
+	background:url('../image/network.png') no-repeat;
+}
