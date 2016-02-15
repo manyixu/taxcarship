@@ -256,9 +256,10 @@ public class TaxCarType {
 			lastReduceTaxDocNo = rkmx.getDEDUCTIONDOCUMENTNUMBER(); 	// 上次纳税的减免税凭证号
 		}
 		// 节约能源车判断
-		flag_jy = cartype_assist.Is_listcode_jy(listcode_jy, model);
+		//flag_jy = cartype_assist.Is_listcode_jy(listcode_jy, model);
+		int eType = NevMatch.getEnergyType(bqri.getVehicleInfo());	//0 = 匹配失败	1 = 新能源	2 = 节约能源（使用新版判定NevMatch.getEnergyType）
 		// 新能源车判断
-		flag_xn = cartype_assist.Is_listcode_xn(listcode_xn, model);
+		//flag_xn = cartype_assist.Is_listcode_xn(listcode_xn, model);
 		// 截取初始登记年份
 		if (firstTime != null && firstTime.length() >= 4) {
 			String datetime = firstTime.substring(0, 4);

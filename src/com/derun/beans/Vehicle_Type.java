@@ -32,6 +32,7 @@ public class Vehicle_Type implements Serializable {
 	private double Power = 0;				// 功率 ,Y
 	private String FuelType = null;			// 燃料种类
 	private String SpecialCarType = null;	// 特殊车标志
+	private String NoticeType = null;	// 公告型号（新能源）
 
 	public double getDisplacement() {
 		return Displacement;
@@ -175,6 +176,14 @@ public class Vehicle_Type implements Serializable {
 
 	public void setFirstRegisterDate(String firstRegisterDate) {
 		FirstRegisterDate = firstRegisterDate;
+	}
+
+	public String getNoticeType() {
+		return NoticeType;
+	}
+
+	public void setNoticeType(String noticeType) {
+		NoticeType = noticeType;
 	}
 
 }
