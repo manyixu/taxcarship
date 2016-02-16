@@ -10,7 +10,7 @@
 
 依赖脚本：
 
-update syjk_ccs_code set codevalue = '[1&2:20120101-20150910],[3:20150911-00000000]';
+update syjk_ccs_code set codevalue = '[1&2:20120101-20150910],[3:20150911-00000000]' where code = 'NevMatchRule';
 
 insert into syjk_ccs_code (CODE, CODETYPE, CODENAME, CODEALIA, VALIDATEFLAG, ISHOTPARA, CODEVALUE, REMARK, MAKDATE)
 values ('NevMatchFlag', 'SysSwitch', '新能源系统判定开关', null, '0', '0', '1', '0-关闭, 1-打开', null);

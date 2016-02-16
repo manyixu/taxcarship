@@ -42,7 +42,7 @@ public class NevMatch {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
 					//新能源匹配规则 - [批次号1&批次号2&•••&批次号n:起期-止期], [批次号1&批次号2&•••&批次号n : 起期-止期],•••, [批次号1&批次号2&•••&批次号n:起期-止期]
-					String matchCfg = CfgLoader.getConfigValue("SysParam", "NevMatchFlag");
+					String matchCfg = CfgLoader.getConfigValue("SysSwitch", "NevMatchFlag");
 					String matchRuleCfg = CfgLoader.getConfigValue("SysParam", "NevMatchRule");
 					if(matchCfg!=null && "1".equals(matchCfg)){//新能源系统判定开关打开
 						if(matchRuleCfg!=null && !"".equals(matchRuleCfg)){

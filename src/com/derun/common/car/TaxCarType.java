@@ -710,7 +710,8 @@ public class TaxCarType {
 			
 			//wbzhao20151022 新能源、节约能源判定start
 			// 新能源车  ---判断方法：与库中配置的新能源车型匹配。参考《新能源车型目录.xlsx》
-			else if(flag_xn){
+//			else if(flag_xn){
+			else if(eType==1){
 				shangp = false ;
 				derate_type = new Derate_Type() ; 
 				derate_type.setDeductionDueType("E");   // 方案
@@ -720,7 +721,8 @@ public class TaxCarType {
 				CT = Tax_Type_Code.VOUCHER_M ;
 			}
 			// 节约能源-------- 判断方法：与库中配置的节约能源车型匹配。参考《新能源车型目录.xlsx》
-			else if(flag_jy){
+//			else if(flag_jy){
+			else if(eType==2){
 				derate_type = new Derate_Type() ; 
 				derate_type.setDeductionDueType("P");   // 方案
 				derate_type.setDeductionDueCode("E");	// 原因
