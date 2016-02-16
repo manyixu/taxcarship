@@ -258,6 +258,10 @@ public class TaxCarType {
 		// 节约能源车判断
 		//flag_jy = cartype_assist.Is_listcode_jy(listcode_jy, model);
 		int eType = NevMatch.getEnergyType(bqri.getVehicleInfo());	//0 = 匹配失败	1 = 新能源	2 = 节约能源（使用新版判定NevMatch.getEnergyType）
+		if(bqri.getVehicleInfo()!=null&&bqri.getVehicleInfo().getNoticeType()!=null&&!"".equals(bqri.getVehicleInfo().getNoticeType().trim())){
+			//如果NoticeType不为空，则存入车辆信息的model字段中 20160216
+			bqri.getVehicleInfo().setModel(bqri.getVehicleInfo().getNoticeType());
+		}
 		// 新能源车判断
 		//flag_xn = cartype_assist.Is_listcode_xn(listcode_xn, model);
 		// 截取初始登记年份
