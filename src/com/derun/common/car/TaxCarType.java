@@ -405,7 +405,7 @@ public class TaxCarType {
 		}
 //------------------------保有车 算税方法判断--------------------------------------------------------------------------	
 		// 保有车   条件：入库明细没有保单起保日期的缴税纪录 && 不是完税车 && 不是批改查询 && 
-		if(((rkmx != null && !"".equals(rkmx)) || begin_yyyy ) && flag && !ServiceType.equals("02")){
+		if(((rkmx != null && !"".equals(rkmx)) || begin_yyyy ) && flag && !ServiceType.equals("02") &&eType!=1 ){	//增加eType!=1新能源车重复投保应该返回免税不是完税wbzhao20160218
 			// 退过短期或者长期  没有申报的  再次投保
 			if(rkmx_end != null && ("2".equals(rkmx_end.getTSBZ()) || "1".equals(rkmx_end.getTSBZ())) && !"1".equals(rkmx_end.getPLATFORMSTATE())){
 				if("2".equals(rkmx.getTSBZ()) && "1".equals(DQ_DATE)){  
@@ -499,7 +499,7 @@ public class TaxCarType {
 				rkmx = listRk.get(0);
 			}
 			// 完税车  已缴税 重复投保
-			else if(DateUtil.getStringDate(T_START,"yyyy").equals(paydate) && !"4".equals(rkmx.getCOUNTTAXTYPE()) && !"R".equals(bqri.getTaxInfo().getTaxConditionCode())){	
+			else if(DateUtil.getStringDate(T_START,"yyyy").equals(paydate) && !"4".equals(rkmx.getCOUNTTAXTYPE()) && !"R".equals(bqri.getTaxInfo().getTaxConditionCode())){
 				flag = false ;	// 是否新车
 				_flag = false ;	// 是否需要计算欠税
 				CF = "true";	// 重复投保标志
@@ -602,6 +602,65 @@ public class TaxCarType {
 				shangp = false ;
 				VT_FLAG = false ;	// 是否需要计算欠税 
 			}
+			// 新能源车  ---判断方法：与库中配置的新能源车型匹配。参考《新能源车型目录.xlsx》
+//			else if(flag_xn){
+			else if(eType==1){
+				shangp = false ;
+				derate_type = new Derate_Type() ; 
+				derate_type.setDeductionDueType("E");   // 方案
+				derate_type.setDeductionDueCode("E");	// 原因
+				bqri.getTaxInfo().getCurrentTaxDue().setDerate(derate_type);
+				bqri.getTaxInfo().setTaxConditionCode("E");
+				CT = Tax_Type_Code.VOUCHER_M ;
+			}
+			
+			// 本地车凭证号完税
+//			else if("T".equals(tax_type.getTaxConditionCode()) && wsdj != null && skssjsrq >= xtrq ){
+			else if(wsdj != null && skssjsrq >= xtrq && M_START == skssjsrq){   // 本地车完税信息不完整   
+				CT = Tax_Type_Code.VOUCHER_M ;
+				if(bqri!=null&&bqri.getTaxInfo()!=null&&"P".equals(bqri.getTaxInfo().getTaxConditionCode()) && bqri.getTaxInfo().getCurrentTaxDue().getPaid()!=null){//bqri 入参P&&paidnotnull
+					//wbzhao add 20151021 批改完税信息取入参
+					paid_type.setTaxDepartment(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDepartment());
+					paid_type.setTaxDepartmentCode(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDepartmentCode());
+					paid_type.setTaxDocumentNumber(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDocumentNumber());
+				}else{
+					paid_type.setTaxDepartment(wsdj.getZGSWJGMC());
+					paid_type.setTaxDepartmentCode(wsdj.getKJSWJGDM());
+					paid_type.setTaxDocumentNumber(wsdj.getWSPZH());
+				}
+				bqri.getTaxInfo().setTaxConditionCode("P");
+				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23  
+//				listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
+			}
+			// 凭证号免税  ---判断方法：必须有开具免税凭证的机关单位并提供该车辆的免税凭证
+			else if("E".equals(taxConditionCode)){
+				if("8".equals(bqri.getChangeType()) || "10".equals(bqri.getChangeType())){
+					J_VOUCHER_DQ = "T_E_S";		// 免税退短期
+				}
+				CT = Tax_Type_Code.VOUCHER_M ;
+				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23  
+//							listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
+			}
+			// 凭证号完税
+			else if("P".equals(taxConditionCode) && TaxDocumentNumber != null && !"".equals(TaxDocumentNumber)){
+				if(rkmx_w != null){  
+					CT = Tax_Type_Code.VOUCHER_M ;     // 有关于完税的车 还要多测测  MILI  2014-11-3   投保法定免税车批改成本地普通车纳税类型为P，返回正常纳税
+//								bqri.getTaxInfo().setTaxConditionCode("T");
+//								bqri.getTaxInfo().getCurrentTaxDue().setPaid(new Paid_Type());
+				}else{
+					if(date_s + 1 == date_t){	//	2014-10-16 ZYY BUG 6 mili 增加一个 if 分支
+						CT = Tax_Type_Code.NEW_CARS ;
+						bqri.getTaxInfo().setTaxConditionCode("T");
+						VT_FLAG = false ;
+						taxstartdate =  DateUtil.getStringDate(DateUtil.getStringDate(T_START,"yyyy") + "-01-01" , null);
+					}else{
+						CT = Tax_Type_Code.VOUCHER_M ;
+					}
+				}
+				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23 
+//							listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
+			}
+			
 			// 本地车凭证号减税----判断方法：必须提供开具免税凭证的机关单位、减免税凭证、该车辆的减征比例或年减免税额
 			else if(jmdj != null && jmszrq >= xtrq){
 				double JMBL = jmdj.getJZBL();
@@ -644,24 +703,7 @@ public class TaxCarType {
 				}
 				bqri.getTaxInfo().getCurrentTaxDue().setDerate(derate_type);
 			}
-			// 本地车凭证号完税
-//			else if("T".equals(tax_type.getTaxConditionCode()) && wsdj != null && skssjsrq >= xtrq ){
-			else if(wsdj != null && skssjsrq >= xtrq && M_START == skssjsrq){   // 本地车完税信息不完整   
-				CT = Tax_Type_Code.VOUCHER_M ;
-				if(bqri!=null&&bqri.getTaxInfo()!=null&&"P".equals(bqri.getTaxInfo().getTaxConditionCode()) && bqri.getTaxInfo().getCurrentTaxDue().getPaid()!=null){//bqri 入参P&&paidnotnull
-					//wbzhao add 20151021 批改完税信息取入参
-					paid_type.setTaxDepartment(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDepartment());
-					paid_type.setTaxDepartmentCode(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDepartmentCode());
-					paid_type.setTaxDocumentNumber(bqri.getTaxInfo().getCurrentTaxDue().getPaid().getTaxDocumentNumber());
-				}else{
-					paid_type.setTaxDepartment(wsdj.getZGSWJGMC());
-					paid_type.setTaxDepartmentCode(wsdj.getKJSWJGDM());
-					paid_type.setTaxDocumentNumber(wsdj.getWSPZH());
-				}
-				bqri.getTaxInfo().setTaxConditionCode("P");
-				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23  
-//				listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
-			}
+
 			// 外地车
 			else if(!wai_flah){ 
 				if("P".equals(taxConditionCode) && TaxDocumentNumber != null && !"".equals(TaxDocumentNumber)){
@@ -683,47 +725,9 @@ public class TaxCarType {
 				}
 				CT = Tax_Type_Code.J_VOUCHER ;
 			}
-			// 凭证号免税  ---判断方法：必须有开具免税凭证的机关单位并提供该车辆的免税凭证
-			else if("E".equals(taxConditionCode)){
-				if("8".equals(bqri.getChangeType()) || "10".equals(bqri.getChangeType())){
-					J_VOUCHER_DQ = "T_E_S";		// 免税退短期
-				}
-				CT = Tax_Type_Code.VOUCHER_M ;
-				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23  
-//				listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
-			}
-			// 凭证号完税
-			else if("P".equals(taxConditionCode) && TaxDocumentNumber != null && !"".equals(TaxDocumentNumber)){
-				if(rkmx_w != null){  
-					CT = Tax_Type_Code.VOUCHER_M ;     // 有关于完税的车 还要多测测  MILI  2014-11-3   投保法定免税车批改成本地普通车纳税类型为P，返回正常纳税
-//					bqri.getTaxInfo().setTaxConditionCode("T");
-//					bqri.getTaxInfo().getCurrentTaxDue().setPaid(new Paid_Type());
-				}else{
-					if(date_s + 1 == date_t){	//	2014-10-16 ZYY BUG 6 mili 增加一个 if 分支
-						CT = Tax_Type_Code.NEW_CARS ;
-						bqri.getTaxInfo().setTaxConditionCode("T");
-						VT_FLAG = false ;
-						taxstartdate =  DateUtil.getStringDate(DateUtil.getStringDate(T_START,"yyyy") + "-01-01" , null);
-					}else{
-						CT = Tax_Type_Code.VOUCHER_M ;
-					}
-				}
-				_flag = false ;    // 完税车、法定免税车、免税车不在查询之前是否有欠税的情况   mili 2015-1-29 16:38:23 
-//				listWt = null ;	   // 完税车、法定免税车、免税车不在查询问题名单   mili 2015-4-21 14:53:07
-			}
 			
 			//wbzhao20151022 新能源、节约能源判定start
-			// 新能源车  ---判断方法：与库中配置的新能源车型匹配。参考《新能源车型目录.xlsx》
-//			else if(flag_xn){
-			else if(eType==1){
-				shangp = false ;
-				derate_type = new Derate_Type() ; 
-				derate_type.setDeductionDueType("E");   // 方案
-				derate_type.setDeductionDueCode("E");	// 原因
-				bqri.getTaxInfo().getCurrentTaxDue().setDerate(derate_type);
-				bqri.getTaxInfo().setTaxConditionCode("E");
-				CT = Tax_Type_Code.VOUCHER_M ;
-			}
+			
 			// 节约能源-------- 判断方法：与库中配置的节约能源车型匹配。参考《新能源车型目录.xlsx》
 //			else if(flag_jy){
 			else if(eType==2){
