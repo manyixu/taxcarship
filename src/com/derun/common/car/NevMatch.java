@@ -33,6 +33,12 @@ public class NevMatch {
 	public static int getEnergyType(Vehicle_Type vt){
 		
 		int energyType = 0;	//是否新能源车辆
+		
+		if(isEleCar(vt)){//判断纯电动乘用车或插电式混合动力乘用车
+			energyType = 1;
+			return energyType;
+		}
+		
 		log.debug("新能源车型匹配开始------------------------");
 		//1-入参中车型匹配车型目录表
 		//2-入参匹配不到，用vin+engineno去核定库中查找新的车型，再去车型目录表进行匹配
@@ -131,6 +137,26 @@ public class NevMatch {
 		
 		
 		return energyType;		
+	}
+	
+	//2.纯电动乘用车
+	/**
+	 * 车辆种类代码为11或12，并且能源种类代码为1纯电动车或3插电式混合动力，并且核定载客人数小于等于9人
+	 * @param vt
+	 * @return
+	 */
+	private static boolean isEleCar(Vehicle_Type vt){
+		if (vt.getMotorTypeCode() != null
+				&& ("11".equals(vt.getMotorTypeCode()) || "12".equals(vt
+						.getMotorTypeCode()))
+				&& vt.getFuelType() != null
+				&& ("1".equals(vt.getFuelType()) || "3"
+						.equals(vt.getFuelType()))
+				&& vt.getRatedPassengerCapacity() <= 9){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
