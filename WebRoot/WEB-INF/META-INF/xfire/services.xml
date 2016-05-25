@@ -2,6 +2,15 @@
 <beans xmlns="http://xfire.codehaus.org/config/1.0">
 
 	<service>
+	<!-- 问题名单服务 -->
+		<name>WtmdService</name>
+		<serviceClass>com.derun.wtmd.service.WtmdService</serviceClass>
+		 <implementationClass>com.derun.wtmd.service.impl.WtmdServiceImpl</implementationClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service>
 	<!-- 投保查询服务 -->
 		<name>TaxQueryService</name>
 		<serviceClass>com.derun.taxquery.service.TaxQueryService</serviceClass>

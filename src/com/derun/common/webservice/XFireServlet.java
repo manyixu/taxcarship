@@ -122,6 +122,7 @@ public class XFireServlet
 					|| "/taxcarship/services/TaxChangeConfirmService".equals(reqURI)
 					|| "/taxcarship/services/TaxDeclaeredUPloadService".equals(reqURI)
 					|| "/taxcarship/services/TaxReconciliationService".equals(reqURI)
+					|| "/taxcarship/services/WtmdService".equals(reqURI)
 					|| "/taxcarship/services/TaxPayQueryService".equals(reqURI)){
 				
 				controller.doService(request, response);

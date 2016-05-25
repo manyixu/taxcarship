@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.derun.beans.AnnualTax_Type;
 import com.derun.beans.BaseChangeQueryReqInfo;
 import com.derun.beans.BaseQueryReqInfo;
@@ -20,6 +21,8 @@ import com.derun.common.tax.TaxBase;
 import com.derun.common.util.FDMianShui;
 import com.derun.common.util.LogUtil;
 import com.derun.common.util.Tax_Type_Code;
+import com.derun.gt3.Gt3InPara;
+import com.derun.gt3.Gt3QueryUtil;
 import com.derun.model.po.Car_Id_No;
 import com.derun.model.po.Query_ChangeQurey;
 import com.derun.model.po.SYJK_CCS_CCSBGCXRCJB;
@@ -145,6 +148,7 @@ public class TaxCarType {
 			}
 		}
 		SYJK_CCS_WSDJXX wsdj = null ;				// 完税登记
+		SYJK_CCS_WSDJXX gt3wsdj = null ;				// 金三完税登记信息
 		SYJK_CCS_DSCCSJMDJXX jmdj = null ;			// 减免登记
 		boolean flag = true , _flag = true ,wtmdflag = true , shangp = true ,tuibao = true , dear_pai = false; 				// _flag =  完税车、wtmdflag = 完税车 、shangp = 商品车
 		boolean dq_flag = false ;
@@ -308,6 +312,10 @@ public class TaxCarType {
 // -----------------法定免税车封装---------------------------------------------------------------------------
 		jmdj = cattype_dao.getSYJK_CCS_DSCCSJMDJXX(VT,null);
 		wsdj = cattype_dao.getSYJK_CCS_WSDJXX(VT,null);
+		Gt3InPara wsIn = new Gt3InPara();
+		wsIn.setVin(VT.getVIN());//用车架号查询金三系统完税信息
+		gt3wsdj = Gt3QueryUtil.getWsxx(wsIn);
+		
 		// 减免登记日期
 		if(jmdj != null){
 			jmszrq = Integer.parseInt(DateUtil.getStringDate(jmdj.getJMSZRQ(),null).substring(0, 4));
