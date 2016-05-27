@@ -36,10 +36,8 @@ public class Gt3QueryUtil {
 		SYJK_CCS_WSDJXX wsdj = new SYJK_CCS_WSDJXX();
 		
 		Gt3DBUtil gt3DBUtil = Gt3DBUtil.getInstance();
-		//目前提供的查询sql只有代征单位代码，没有开具完税凭证税务机关代码和税务机关名称，税务机关名称需要关联字典表查询
-		StringBuffer sb = new StringBuffer();
-		
-		SSRS ssrs = gt3DBUtil.Query(sb.toString());	
+		Gt3SQL gt3sql = new Gt3SQL();
+		SSRS ssrs = gt3DBUtil.Query(gt3sql.sb.toString());	
 		
 		try {
 			wsdj.setID(ssrs.GetText(1, 1));
