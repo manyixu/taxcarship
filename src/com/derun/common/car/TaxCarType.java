@@ -316,6 +316,10 @@ public class TaxCarType {
 		wsIn.setVin(VT.getVIN());//用车架号查询金三系统完税信息
 		gt3wsdj = Gt3QueryUtil.getWsxx(wsIn);
 		
+		if(wsdj==null && gt3wsdj!=null){
+			wsdj = gt3wsdj;
+		}
+		
 		// 减免登记日期
 		if(jmdj != null){
 			jmszrq = Integer.parseInt(DateUtil.getStringDate(jmdj.getJMSZRQ(),null).substring(0, 4));
