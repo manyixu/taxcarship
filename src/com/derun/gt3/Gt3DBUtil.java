@@ -2,14 +2,19 @@ package com.derun.gt3;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +38,12 @@ public class Gt3DBUtil {
 	private static Gt3DBUtil gt3DBUtil = null;
 	private static String configPath = "/gt3db.properties";
 	private static Map<String, String> proMap = new HashMap<String, String>();
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+	private static SimpleDateFormat sdfd = new SimpleDateFormat("yyyyMMdd");
 	
 
 	private Gt3DBUtil(){
-		File file = new File(Gt3DBUtil.class.getClass().getResource(configPath).getPath());
+		File file = new File(Thread.currentThread().getContextClassLoader().getResource("/").getPath()+configPath);
 		InputStream is = null; 
 		Properties pro = new Properties();
 		try {
@@ -105,6 +112,7 @@ public class Gt3DBUtil {
 			}
 		} catch (Exception ex) {
 			log.error("Error in Query - Sql's bug is very big : "+ex);
+			write2File("/gt3errorsql"+sdfd.format(new Date())+".log", sdf.format(new Date())+"\n"+SQL+"\n\n");
 		}finally{
 			close(stmt, rs, connection);
 			//finalize();//用哪个，是否有必要
@@ -224,5 +232,22 @@ public class Gt3DBUtil {
 
         return StrTool.cTrim(strValue);
     }
+    
+	private static void write2File(String path, String strbuf) {
+
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(
+					path)), true);
+			pw.println(strbuf);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pw != null) {
+				pw.close();
+			}
+		}
+	}
 	
 }
