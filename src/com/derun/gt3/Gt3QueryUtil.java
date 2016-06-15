@@ -33,13 +33,48 @@ public class Gt3QueryUtil {
 	public static SYJK_CCS_WSDJXX getWsxx(Gt3InPara wsIn) {
 		long start = Long.parseLong(sdf.format(new Date()));
 		log.debug("gt3 wsxx query starttime: "+sdfp.format(new Date()));
-		SYJK_CCS_WSDJXX wsdj = new SYJK_CCS_WSDJXX();
-		
+		SYJK_CCS_WSDJXX wsdj = null;
 		Gt3DBUtil gt3DBUtil = Gt3DBUtil.getInstance();
-		Gt3SQL gt3sql = new Gt3SQL();
-		SSRS ssrs = gt3DBUtil.Query(gt3sql.sb.toString());	
+		String conntype = Gt3DBUtil.proMap.get("conntype");//金三系统数据库连接方式 (1=直连, 2=DBLink)
+		String wsSql01="";
+		String wsSql02="";
+		String wsSql03="";
+		String wsSql04="";
+		if(conntype!=null && "1".equals(conntype)){
+			Gt3SQLNoDblink gt3sql = new Gt3SQLNoDblink(wsIn);
+			wsSql01 = gt3sql.sb1.toString();
+			wsSql02 = gt3sql.sb2.toString();
+			wsSql03 = gt3sql.sb3.toString();
+			wsSql04 = gt3sql.sb4.toString();
+		}else{
+			Gt3SQL gt3sql = new Gt3SQL(wsIn);	
+			wsSql01 = gt3sql.sb1.toString();
+			wsSql02 = gt3sql.sb2.toString();
+			wsSql03 = gt3sql.sb3.toString();
+			wsSql04 = gt3sql.sb4.toString();
+		}
+		SSRS ssrs = gt3DBUtil.Query(wsSql01);	
+		boolean ssrsFull = false;
 		if(ssrs!=null && ssrs.MaxRow>0){
-			
+			ssrsFull = true;
+		}else{
+			ssrs = gt3DBUtil.Query(wsSql02);	
+			if(ssrs!=null && ssrs.MaxRow>0){
+				ssrsFull = true;
+			}else{
+				ssrs = gt3DBUtil.Query(wsSql03);	
+				if(ssrs!=null && ssrs.MaxRow>0){
+					ssrsFull = true;
+				}else{
+					ssrs = gt3DBUtil.Query(wsSql04);	
+					if(ssrs!=null && ssrs.MaxRow>0){
+						ssrsFull = true;
+					}
+				}
+			}
+		}
+		if(ssrsFull){
+			wsdj = new SYJK_CCS_WSDJXX();
 			try {
 				wsdj.setID(ssrs.GetText(1, 1));
 				wsdj.setNSRSBH(ssrs.GetText(1, 2));//c.nsrsbh
@@ -57,7 +92,7 @@ public class Gt3QueryUtil {
 				wsdj.setWSRQ(sdfs.parse(ssrs.GetText(1, 11)));//wsrq完税日期
 				wsdj.setDZDWDM(ssrs.GetText(1, 12));//代征单位代码
 				wsdj.setWSPZH(ssrs.GetText(1, 13));//wspzh完税凭证号***
-				wsdj.setSJCJRQ(sdfd.parse(ssrs.GetText(1, 14)));//sjcjrq数据采集日期
+				wsdj.setSJCJRQ(new Date());//sjcjrq数据采集日期
 				wsdj.setKJSWJGDM(ssrs.GetText(1, 12));//swjgdm开具凭证税务机关代码*** （认为与完税机关代码相同）
 				wsdj.setZGSWJGMC("GT3ZGSWJGMC");//主管税务机关名称***（需要关联字典表）
 //			wsdj.setDZDWMC("");
@@ -79,7 +114,7 @@ public class Gt3QueryUtil {
 		
 		log.debug("gt3 wsxx query endtime: "+sdfp.format(new Date()));
 		long end = Long.parseLong(sdf.format(new Date()));
-		log.debug("gt3 wsxx query whole time cost: "+String.valueOf(end-start)+" ms");
+		log.debug("gt3 wsxx query whole time cost: "+String.valueOf(end-start)+" ms. result:matched?" + String.valueOf(ssrs!=null&&ssrs.MaxRow>0));
 		return wsdj;
 	}
 	

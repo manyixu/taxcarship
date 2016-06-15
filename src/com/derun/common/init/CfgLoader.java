@@ -12,6 +12,7 @@ import com.derun.common.db.ExeSQL;
 import com.derun.common.db.SSRS;
 import com.derun.common.db.SqlText;
 import com.derun.dbpool.DBConnectionManager;
+import com.derun.gt3.Gt3DBUtil;
 import com.derun.model.po.SYJK_CCS_CODE;
 
 /**
@@ -32,6 +33,7 @@ public class CfgLoader implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		
 		DBConnectionManager.getInstance();
+		Gt3DBUtil.getInstance();//金三数据库查询连接工具实例
 		
 		String sql = SqlText.R_00_CODE_001;
 		

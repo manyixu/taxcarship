@@ -21,6 +21,7 @@ import com.derun.common.tax.TaxBase;
 import com.derun.common.util.FDMianShui;
 import com.derun.common.util.LogUtil;
 import com.derun.common.util.Tax_Type_Code;
+import com.derun.gt3.Gt3DBUtil;
 import com.derun.gt3.Gt3InPara;
 import com.derun.gt3.Gt3QueryUtil;
 import com.derun.model.po.Car_Id_No;
@@ -312,9 +313,14 @@ public class TaxCarType {
 // -----------------法定免税车封装---------------------------------------------------------------------------
 		jmdj = cattype_dao.getSYJK_CCS_DSCCSJMDJXX(VT,null);
 		wsdj = cattype_dao.getSYJK_CCS_WSDJXX(VT,null);
-		Gt3InPara wsIn = new Gt3InPara();
-		wsIn.setVin(VT.getVIN());//用车架号查询金三系统完税信息
-		gt3wsdj = Gt3QueryUtil.getWsxx(wsIn);
+		if(wsdj==null){//先查询子系统完税表（命中率高），查不到再查询金三
+			String gt3Enabled = Gt3DBUtil.proMap.get("enabled");
+			if(gt3Enabled!=null && "y".equals(gt3Enabled.toLowerCase())){//金三系统查询功能开关
+				Gt3InPara wsIn = new Gt3InPara();
+				wsIn.setVin(VT.getVIN());//用车架号查询金三系统完税信息
+				gt3wsdj = Gt3QueryUtil.getWsxx(wsIn);
+			}
+		}
 		
 		if(wsdj==null && gt3wsdj!=null){
 			wsdj = gt3wsdj;

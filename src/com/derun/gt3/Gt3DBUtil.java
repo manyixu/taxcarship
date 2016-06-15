@@ -37,12 +37,13 @@ public class Gt3DBUtil {
 	private PooledConnection dbpool;
 	private static Gt3DBUtil gt3DBUtil = null;
 	private static String configPath = "/gt3db.properties";
-	private static Map<String, String> proMap = new HashMap<String, String>();
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+	public static Map<String, String> proMap = new HashMap<String, String>();
+	//private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 	private static SimpleDateFormat sdfd = new SimpleDateFormat("yyyyMMdd");
 	
 
 	private Gt3DBUtil(){
+		System.out.println("create Gt3DBUtil instance...");
 		File file = new File(Thread.currentThread().getContextClassLoader().getResource("/").getPath()+configPath);
 		InputStream is = null; 
 		Properties pro = new Properties();
@@ -64,11 +65,13 @@ public class Gt3DBUtil {
 				ocpds.setPassword(proMap.get("password"));
 				dbpool = ocpds.getPooledConnection();
 			}
-			
+			System.out.println("dbpool created successfully ...");
 		} catch (IOException e) {
 			log.error("Error in IO : "+e);
+			System.out.println("Error in IO : "+e);
 		} catch (Exception ex) {
 			log.error("Error in PooledSQL-construct : "+ex);
+			System.out.println("Error in PooledSQL-construct : "+ex);
 		} finally {
 			try {
 				is.close();// 千万别忘了关闭资源哦！
@@ -112,7 +115,8 @@ public class Gt3DBUtil {
 			}
 		} catch (Exception ex) {
 			log.error("Error in Query - Sql's bug is very big : "+ex);
-			write2File("/gt3errorsql"+sdfd.format(new Date())+".log", sdf.format(new Date())+"\n"+SQL+"\n\n");
+			log.debug(SQL);
+			write2File("/software/ccspt/log/gt3errorsql"+sdfd.format(new Date())+".sql", SQL);
 		}finally{
 			close(stmt, rs, connection);
 			//finalize();//用哪个，是否有必要
@@ -242,7 +246,8 @@ public class Gt3DBUtil {
 			pw.println(strbuf);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			log.debug("FileNotFoundException error file path: "+path);
 		} finally {
 			if (pw != null) {
 				pw.close();
